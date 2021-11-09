@@ -38,7 +38,10 @@ public class WinMaster {
                     // parse the string value to a float
                     height = Float.parseFloat(stringHeight);
                     
-                    isValid = true;
+                    if(height > 0)
+                        isValid = true;
+                    else
+                        System.err.println("Please enter a number greater then zero");
                 } catch (NumberFormatException e) {
                     
                    System.out.println("You entered an invalid value"); 
@@ -60,7 +63,10 @@ public class WinMaster {
                     // parse the string value to a float
                     width = Float.parseFloat(stringWidth);
                     
-                    isValid = true;
+                    if(width > 0)
+                        isValid = true;
+                    else
+                        System.err.println("Please enter a number greater then zero");
                 } catch (NumberFormatException e) {
                     
                    System.out.println("You entered an invalid value"); 
