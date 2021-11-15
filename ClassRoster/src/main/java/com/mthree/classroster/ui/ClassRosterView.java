@@ -80,7 +80,7 @@ public class ClassRosterView {
 			io.print("");
 		}
 		else{
-			io.print("No suck student.");
+			io.print("No such student.");
 		}
 		io.readString("Please hit enter to continue.");
 	}
