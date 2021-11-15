@@ -1,8 +1,10 @@
 package com.mthree.classroster.controller;
 
-import com.mthree.classroster.dao.ClassRosterDao;
-import com.mthree.classroster.dao.ClassRosterDaoException;
+import com.mthree.classroster.dao.ClassRosterPersistenceException;
 import com.mthree.classroster.dto.Student;
+import com.mthree.classroster.service.ClassRosterDataValidationException;
+import com.mthree.classroster.service.ClassRosterDuplicateIdException;
+import com.mthree.classroster.service.ClassRosterServiceLayer;
 import com.mthree.classroster.ui.ClassRosterView;
 import java.util.List;
 
@@ -13,11 +15,11 @@ import java.util.List;
  * purpose: This class controls the flow of the program
  */
 public class ClassRosterController {
-	private ClassRosterDao dao;
+	private ClassRosterServiceLayer service;
 	private ClassRosterView view;
 
-	public ClassRosterController(ClassRosterDao dao, ClassRosterView view) {
-		this.dao = dao;
+	public ClassRosterController(ClassRosterServiceLayer service, ClassRosterView view) {
+		this.service = service;
 		this.view = view;
 	}
 	
@@ -59,39 +61,53 @@ public class ClassRosterController {
 			// display a closing message before exiting the program
 			exitMessage();
 		}
-		catch(ClassRosterDaoException e){
+		catch(ClassRosterPersistenceException e){
 			// there was an error show error message and quit
 			view.displayErrorMessage(e.getMessage());
 		}
 	}
 	
 	// creates a student
-	private void createStudent() throws ClassRosterDaoException {
+	private void createStudent() throws ClassRosterPersistenceException {
+		boolean hasErrors = false;
+
 		// display create student banner
 		view.displayCreateStudentBanner();
 		
-		// create new student from data prompted from the user
-		Student newStudent = view.getNewStudentInfo();
+		// loop till the user enter a valid new student to create
+		do {			
+			// create new student from data prompted from the user
+			Student newStudent = view.getNewStudentInfo();
+			
+			// try to add that student, catch any student data errors
+			try {
+				// add that student
+				service.createStudent(newStudent);
+				hasErrors = false;
 		
-		// add that student to dao
-		dao.addStudent(newStudent.getStudentId(), newStudent);
-		
+			} catch (ClassRosterDataValidationException | ClassRosterDuplicateIdException e) {
+				hasErrors = true;
+				view.displayErrorMessage(e.getMessage());
+			}
+			
+		} while (hasErrors);
+			
 		// tell the user that student was created successfuly
 		view.displayCreateSuccessBanner();
 	}
 	
 	// list all existing students
-	private void listStudents() throws ClassRosterDaoException {
+	private void listStudents() throws ClassRosterPersistenceException {
 		// display list all students banner
 		view.displayAllBanner();
 		
 		// get all students and display that data for the user
-		List<Student> studentList = dao.getAllStudents();
+		List<Student> studentList = service.getAllStudents();
 		view.displayStudentList(studentList);
 	}
 	
 	// view a single student
-	private void viewStudent() throws ClassRosterDaoException {
+	private void viewStudent() throws ClassRosterPersistenceException {
 		// display student banner
 		view.displayDisplayStudentBanner();
 		
@@ -99,14 +115,14 @@ public class ClassRosterController {
 		String studentId = view.getStudentIdChoice();
 		
 		// get the student with that id
-		Student student = dao.getStudent(studentId);
+		Student student = service.getStudent(studentId);
 		
 		// display that data to the user
 		view.displayStudent(student);
 	}
 	
 	// remove a student
-	private void removeStudent() throws ClassRosterDaoException {
+	private void removeStudent() throws ClassRosterPersistenceException {
 		// display remove student banner
 		view.displayRemoveStudentBanner();
 		
@@ -114,7 +130,7 @@ public class ClassRosterController {
 		String studentId = view.getStudentIdChoice();
 		
 		// remove the student with that id
-		Student removedStudent = dao.removeStudent(studentId);
+		Student removedStudent = service.removeStudent(studentId);
 		
 		// display the results of the remove
 		view.displayRemoveResult(removedStudent);

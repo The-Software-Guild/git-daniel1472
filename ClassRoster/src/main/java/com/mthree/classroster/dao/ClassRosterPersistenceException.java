@@ -6,13 +6,13 @@ package com.mthree.classroster.dao;
  * date: date
  * purpose: Program Description
  */
-public class ClassRosterDaoException extends Exception {
+public class ClassRosterPersistenceException extends Exception {
 	
-	public ClassRosterDaoException(String message) {
+	public ClassRosterPersistenceException(String message) {
 		super(message);
 	}
 	
-	public ClassRosterDaoException(String message, Throwable cause) {
+	public ClassRosterPersistenceException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }
