@@ -1,10 +1,8 @@
 package com.mthree.classroster;
 
 import com.mthree.classroster.controller.ClassRosterController;
-import com.mthree.classroster.dao.*;
-import com.mthree.classroster.service.ClassRosterServiceLayer;
-import com.mthree.classroster.service.ClassRosterServiceLayerImpl;
-import com.mthree.classroster.ui.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author Daniel Lambert
@@ -14,7 +12,7 @@ import com.mthree.classroster.ui.*;
  */
 public class App {
 	public static void main(String[] args) {
-		
+		/*
 		// create the UserIO impl that we are going to use
 		UserIO myIO = new UserIOConsoleImpl();
 		
@@ -33,6 +31,11 @@ public class App {
 		
 		// create the controller with the impl we want to use and start runing it
 		ClassRosterController controller = new ClassRosterController(myService, myView);
+		controller.run(); 
+		*/
+		
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ClassRosterController controller = ctx.getBean("controller", ClassRosterController.class);
 		controller.run();
 	}
 	

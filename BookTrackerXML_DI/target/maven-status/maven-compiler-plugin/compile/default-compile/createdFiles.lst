@@ -1,0 +1,9 @@
+com\sg\booktracker\controller\BookController.class
+com\sg\booktracker\dto\Book.class
+com\sg\booktracker\service\BookService.class
+com\sg\booktracker\App.class
+com\sg\booktracker\dao\BookDao.class
+com\sg\booktracker\ui\UserIOConsoleImpl.class
+com\sg\booktracker\dao\BookDaoMemoryImpl.class
+com\sg\booktracker\ui\UserIO.class
+com\sg\booktracker\ui\BookView.class

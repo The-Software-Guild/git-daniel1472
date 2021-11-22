@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -25,10 +27,15 @@ public class ClassRosterServiceLayerImplTest {
 	private ClassRosterServiceLayer service;
 	
 	public ClassRosterServiceLayerImplTest() {
+		/*
 		ClassRosterDao dao = new ClassRosterDaoStubImpl();
 		ClassRosterAuditDao auditDao = new ClassRosterAuditDaoStubImpl();
 		
 		service = new ClassRosterServiceLayerImpl(dao, auditDao);
+		*/
+		
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		service = ctx.getBean("serviceLayer", ClassRosterServiceLayer.class);
 	}
 	
 	@BeforeClass
